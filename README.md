@@ -7,6 +7,7 @@ Aplicación web para gestionar tasks de manera sencilla. Agrega, actualiza y eli
 - **Agregar tareas**: Los usuarios pueden agregar nuevas tareas a la lista.
 - **Actualizar tareas**: Los usuarios pueden editar tareas existentes para marcar como completas o realizar cambios en su descripción.
 - **Eliminar tareas**: Los usuarios pueden eliminar tareas completadas o que ya no sean necesarias.
+- **Filtrar tareas**: Los ususrios pueden filtrar tareas por el nombre o estado.
 
 ## URL de la Aplicación
 
