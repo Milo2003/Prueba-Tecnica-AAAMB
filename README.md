@@ -1,6 +1,4 @@
-#Prueba Técnica AAAMB
-
-## Descripción
+##Prueba Técnica AAAMB
 
 Aplicación web para gestionar tasks de manera sencilla. Agrega, actualiza y elimina tasks. Con una interfaz clara y fácil de usar.
 
