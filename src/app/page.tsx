@@ -10,7 +10,7 @@ export interface Task {
   title: string;
   description: string;
   dueDate: string;
-  status: 'Por hacer' | 'En progreso' | 'Hecho';
+  status: 'Pendiente' | 'En proceso' | 'Hecho';
 }
 
 export default function TaskManager() {

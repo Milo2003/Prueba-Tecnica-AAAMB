@@ -7,7 +7,7 @@ interface Task {
   title: string;
   description: string;
   dueDate: string;
-  status: string;
+  status: 'Por hacer' | 'En progreso' | 'Hecho';
 }
 
 interface TaskFormProps {
@@ -24,7 +24,7 @@ export default function TaskForm({
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [status, setStatus] = useState('Pendiente');
+  const [status, setStatus] = useState('Por hacer');
 
   useEffect(() => {
     if (initialTask) {
@@ -36,7 +36,7 @@ export default function TaskForm({
       setTitle('');
       setDescription('');
       setDueDate('');
-      setStatus('Pendiente');
+      setStatus('Por hacer');
     }
   }, [initialTask]);
 
@@ -56,8 +56,9 @@ export default function TaskForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 space-y-4">
       <input
+        className='h-10 w-full rounded-md border px-3 py-2 text-sm'
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -65,11 +66,13 @@ export default function TaskForm({
         required
       />
       <textarea
+        className='h-32 w-full rounded-md border px-3 py-2 text-sm'
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Descripción"
       />
       <input
+        className='h-10 w-full rounded-md border px-3 py-2 text-sm'
         type="date"
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
@@ -88,13 +91,13 @@ export default function TaskForm({
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 border rounded-md"
+          className="px-4 py-2 border rounded-md hover:bg-gray-200"
         >
           Cancelar
         </button>
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-400"
         >
           {initialTask ? 'Actualizar Tarea' : 'Agregar Tarea'}
         </button>
