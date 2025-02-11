@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import clientPromise from "@/lib/mongodb"
+import clientPromise from "app/lib/mongodb"
 
 interface Task {
   id: string

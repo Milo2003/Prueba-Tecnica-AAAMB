@@ -1,6 +1,4 @@
-'use server';
-
-import { revalidatePath } from 'next/cache';
+// import { revalidatePath } from 'next/cache';
 interface Task {
   id: string;
   title: string;
@@ -10,7 +8,7 @@ interface Task {
 }
 
 export async function getTasks() {
-  const response = await fetch('/api/tasks', {
+  const response = await fetch('api/tasks', {
     cache: 'no-store',
   });
   if (!response.ok) throw new Error('Error al obtener las tareas');
@@ -18,7 +16,7 @@ export async function getTasks() {
 }
 
 export async function addTask(task: Omit<Task, 'id'>) {
-  const response = await fetch('/api/tasks', {
+  const response = await fetch('api/tasks', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -27,12 +25,12 @@ export async function addTask(task: Omit<Task, 'id'>) {
   });
 
   if (!response.ok) throw new Error('Error al crear la tarea');
-  revalidatePath('/');
+  // revalidatePath('/');
   return response.json();
 }
 
 export async function updateTask(task: Task) {
-  const response = await fetch(`/api/tasks/${task.id}`,
+  const response = await fetch(`api/tasks/${task.id}`,
     {
       method: 'PUT',
       headers: {
@@ -43,16 +41,15 @@ export async function updateTask(task: Task) {
   );
 
   if (!response.ok) throw new Error('Error al actualizar la tarea');
-  revalidatePath('/');
+  // revalidatePath('/');
   return response.json();
 }
 
 export async function deleteTask(id: string) {
-  const response = await fetch(`/api/tasks/${id}`, {
+  const response = await fetch(`api/tasks/${id}`, {
     method: 'DELETE',
   });
 
   if (!response.ok) throw new Error('Error al eliminar la tarea');
-  revalidatePath('/');
   return response.json();
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import clientPromise from "@/lib/mongodb"
+import clientPromise from "app/lib/mongodb"
 
 interface Task {
   id: string
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     }
 
     const result = await collection.insertOne(newTask)
-
+    console.log('Tarea creada:', result)
     return NextResponse.json(newTask, { status: 201 })
   } catch (error) {
     console.error("Error al crear la tarea:", error)
