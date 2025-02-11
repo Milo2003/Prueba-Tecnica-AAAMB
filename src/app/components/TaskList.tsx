@@ -3,7 +3,7 @@ interface Task {
   title: string;
   description: string;
   dueDate: string;
-  status: string;
+  status: 'Por hacer' | 'En progreso' | 'Hecho';
 }
 interface TaskListProps {
   tasks: Task[];

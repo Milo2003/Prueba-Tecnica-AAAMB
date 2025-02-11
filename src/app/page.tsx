@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import SearchFilter from './components/SearchFilter';
-import { getTasks, addTask, updateTask, deleteTask } from "./actions"
+import { getTasks, addTask, updateTask, deleteTask } from './actions';
 
 export interface Task {
   id: string;
@@ -18,55 +18,54 @@ export default function TaskManager() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
-  const dialogRef = useRef<HTMLDialogElement>(null)
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     const loadTasks = async () => {
-        try {
-            const loadedTasks = await getTasks();
-            setTasks(loadedTasks);
-            setFilteredTasks(loadedTasks);
-        } catch (error) {
-            console.error('Error al obtener las tareas:', error);
-        }
-    }
+      try {
+        const loadedTasks = await getTasks();
+        setTasks(loadedTasks);
+        setFilteredTasks(loadedTasks);
+      } catch (error) {
+        console.error('Error al obtener las tareas:', error);
+      }
+    };
     loadTasks();
   }, []);
 
-
   const handleAddTask = async (task: Omit<Task, 'id'>) => {
     try {
-        await addTask(task)
-        const updatedTasks = await getTasks()
-        setTasks(updatedTasks)
-        setFilteredTasks(updatedTasks)
-        dialogRef.current?.close();
-      } catch (error) {
-        console.error("Error al añadir la tarea:", error)
-      }
-    }
-
-  const handleUpdateTask = async(taskToUpdate: Task) => {
-    try {
-      await updateTask(taskToUpdate)
-      const updatedTasks = await getTasks()
-      setTasks(updatedTasks)
-      setFilteredTasks(updatedTasks)
-      setEditingTask(null)
+      await addTask(task);
+      const updatedTasks = await getTasks();
+      setTasks(updatedTasks);
+      setFilteredTasks(updatedTasks);
       dialogRef.current?.close();
     } catch (error) {
-      console.error("Error al actualizar la tarea:", error)
+      console.error('Error al añadir la tarea:', error);
+    }
+  };
+
+  const handleUpdateTask = async (taskToUpdate: Task) => {
+    try {
+      await updateTask(taskToUpdate);
+      const updatedTasks = await getTasks();
+      setTasks(updatedTasks);
+      setFilteredTasks(updatedTasks);
+      setEditingTask(null);
+      dialogRef.current?.close();
+    } catch (error) {
+      console.error('Error al actualizar la tarea:', error);
     }
   };
 
   const handleDeleteTask = async (id: string) => {
     try {
-      await deleteTask(id)
-      const updatedTasks = await getTasks()
-      setTasks(updatedTasks)
-      setFilteredTasks(updatedTasks)
+      await deleteTask(id);
+      const updatedTasks = await getTasks();
+      setTasks(updatedTasks);
+      setFilteredTasks(updatedTasks);
     } catch (error) {
-      console.error("Error al eliminar la tarea:", error)
+      console.error('Error al eliminar la tarea:', error);
     }
   };
 
@@ -96,10 +95,10 @@ export default function TaskManager() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4 text-center">
+      <h1 className="text-4xl font-bold mb-6 text-center">
         Gestor de Tareas Personales
       </h1>
-      <div className="flex items-center space-x-4 mb-4">
+      <div className="flex items-center space-x-4 mb-10">
         <SearchFilter onSearch={handleSearch} onFilter={handleFilter} />
         <button
           onClick={() => {
