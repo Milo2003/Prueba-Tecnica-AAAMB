@@ -4,50 +4,70 @@ import { useState, useEffect, useRef } from 'react';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import SearchFilter from './components/SearchFilter';
+import { getTasks, addTask, updateTask, deleteTask } from "./actions"
 
 export interface Task {
   id: string;
   title: string;
   description: string;
   dueDate: string;
-  status: 'Pendiente' | 'En proceso' | 'Hecho';
+  status: 'Por hacer' | 'En progreso' | 'Hecho';
 }
 
 export default function TaskManager() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
-  const dialogRef = useRef<HTMLDialogElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
-    const storedTasks = localStorage.getItem('tasks');
-    if (storedTasks) {
-      setTasks(JSON.parse(storedTasks));
-      setFilteredTasks(JSON.parse(storedTasks));
+    const loadTasks = async () => {
+        try {
+            const loadedTasks = await getTasks();
+            setTasks(loadedTasks);
+            setFilteredTasks(loadedTasks);
+        } catch (error) {
+            console.error('Error al obtener las tareas:', error);
+        }
     }
+    loadTasks();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    setFilteredTasks(tasks);
-  }, [tasks]);
 
-  const addTask = (task: Omit<Task, 'id'>) => {
-    const newTask = { ...task, id: Date.now().toString() };
-    setTasks([...tasks, newTask]);
-    dialogRef.current?.close();
+  const handleAddTask = async (task: Omit<Task, 'id'>) => {
+    try {
+        await addTask(task)
+        const updatedTasks = await getTasks()
+        setTasks(updatedTasks)
+        setFilteredTasks(updatedTasks)
+        dialogRef.current?.close();
+      } catch (error) {
+        console.error("Error al añadir la tarea:", error)
+      }
+    }
+
+  const handleUpdateTask = async(taskToUpdate: Task) => {
+    try {
+      await updateTask(taskToUpdate)
+      const updatedTasks = await getTasks()
+      setTasks(updatedTasks)
+      setFilteredTasks(updatedTasks)
+      setEditingTask(null)
+      dialogRef.current?.close();
+    } catch (error) {
+      console.error("Error al actualizar la tarea:", error)
+    }
   };
 
-  const updateTask = (updatedTask: Task) => {
-    setTasks(
-      tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)),
-    );
-    setEditingTask(null);
-    dialogRef.current?.close();
-  };
-
-  const deleteTask = (id: string) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const handleDeleteTask = async (id: string) => {
+    try {
+      await deleteTask(id)
+      const updatedTasks = await getTasks()
+      setTasks(updatedTasks)
+      setFilteredTasks(updatedTasks)
+    } catch (error) {
+      console.error("Error al eliminar la tarea:", error)
+    }
   };
 
   const handleSearch = (searchTerm: string) => {
@@ -68,9 +88,9 @@ export default function TaskManager() {
 
   const handleFormSubmit = (task: Omit<Task, 'id'>) => {
     if (editingTask) {
-      updateTask({ ...task, id: editingTask.id });
+      handleUpdateTask({ ...task, id: editingTask.id });
     } else {
-      addTask(task);
+      handleAddTask(task);
     }
   };
 
@@ -106,7 +126,7 @@ export default function TaskManager() {
       </dialog>
       <TaskList
         tasks={filteredTasks}
-        onDelete={deleteTask}
+        onDelete={handleDeleteTask}
         onEdit={(task) => {
           setEditingTask(task);
           dialogRef.current?.showModal();

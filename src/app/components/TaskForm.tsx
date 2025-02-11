@@ -48,7 +48,7 @@ export default function TaskForm({
     today.setHours(0, 0, 0, 0);
     const selectedDate = new Date(dueDate);
     if (selectedDate < today) {
-      alert('La fecha de vencimiento no puede ser una fecha pasada');
+      alert('La fecha de vencimiento debe ser una fecha futura');
       return;
     }
 
