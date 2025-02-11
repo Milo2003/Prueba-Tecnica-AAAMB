@@ -17,6 +17,7 @@ export async function initDatabase() {
   const db = client.db('taskmanager');
 
   try {
+    //Crear la colección 'tasks' con validación de esquema
     await db.createCollection('tasks', {
       validator: {
         $jsonSchema: {

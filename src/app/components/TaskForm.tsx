@@ -45,7 +45,7 @@ export default function TaskForm({
     if (!title || !dueDate) return;
 
     const minDate = new Date();
-    minDate.setDate(minDate.getDate() - 1)
+    minDate.setDate(minDate.getDate() - 1);
     const selectedDate = new Date(dueDate);
     if (selectedDate < minDate) {
       alert('La fecha de vencimiento debe establecerse a partir de hoy');

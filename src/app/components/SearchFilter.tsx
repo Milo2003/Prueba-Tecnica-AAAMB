@@ -3,7 +3,10 @@ interface SearchFilterProps {
   onFilter: (status: string) => void;
 }
 
-export default function SearchFilter({ onSearch, onFilter }: SearchFilterProps) {
+export default function SearchFilter({
+  onSearch,
+  onFilter,
+}: SearchFilterProps) {
   return (
     <div className="flex items-center space-x-2 flex-grow">
       <input
@@ -24,4 +27,3 @@ export default function SearchFilter({ onSearch, onFilter }: SearchFilterProps) 
     </div>
   );
 }
-
